@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+{% block body %}
+<div class="container">
+    <h1 class ="mt-4">Ajout d'un anime</h1>
+
+<a href="{{ path('anime.index')}}" class="btn btn-dark btn-sm mt-4">Retourner à la liste des animés</a>
+
+{{ form_start(form) }}
+    <div class="form-group">
+      {{ form_label(form.name) }}
+      {{ form_widget(form.name) }}
+     <div class="form-error">
+      {{ form_errors(form.name) }}
+    </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.episodes) }}
+      {{ form_widget(form.episodes) }}
+    <div class="form-error">
+      {{ form_errors(form.episodes) }}
+    </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.genre) }}
+      {{ form_widget(form.genre) }}
+    <div class="form-error">
+      {{ form_errors(form.genre) }}
+    </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.period) }}
+      {{ form_widget(form.period) }}
+    <div class="form-error">
+      {{ form_errors(form.period) }}
+    </div>
+    </div>
+
+    <div class="form-group">
+      {{ form_label(form.description) }}
+      {{ form_widget(form.description) }}
+     <div class="form-error">
+      {{ form_errors(form.description) }}
+    </div>
+    </div>
+    <div class="form-group">
+    {{form_row(form.submit)}}
+{{ form_end(form) }}
+</div>
+{% endblock %}

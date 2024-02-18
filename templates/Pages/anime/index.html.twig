@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AnimeToWatch - Animes{% endblock %}
+
+{% block body %}
+  <div class = "container mt-4 ">
+  {% if not Animes.items is same as ([]) %}
+  <h1 class = "d-flex justify-content-center" >All Animes</h1>
+  
+  <a href="{{ path('anime.new')}}" class="btn btn-light btn-sm">
+    Ajouter un anime
+  </a>
+
+ {# read and display just one flash message type #}
+  {% for message in app.flashes('success') %}
+    <div class="alert alert-success mt-4">
+        {{ message }}
+    </div>
+  {% endfor %}  
+
+  <div class= "count mt-4">
+   Il y a actuellement {{Animes.getTotalItemCount}} animés sur le site: 
+  </div>
+  <table class="table table-hover  mt-4">
+  <thead>
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Genre</th>
+      <th scope="col">Episodes</th>
+      <th scope="col">Description</th>
+      <th scope="col">Année</th>
+      <th scope="col">Modification</th>
+      <th scope="col">Suppression</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for anime in Animes %}
+    <tr class="table-dark ">
+      <th scope="row">{{anime.id}}</th>
+      <td>{{anime.Name}}</td>
+      <td>{{anime.Genre}}</td>
+      <td>{{anime.Episodes}}</td>
+      <td>{{anime.Description}}</td>
+      <td>{{anime.period}}</td>
+      <td>
+          <a href="{{ path('anime.edit', { id: anime.id }) }}" class = "btn btn-secondary">Modifier</a>
+      </td>
+      <td>
+        <a href="{{ path('anime.delete', { id: anime.id }) }}" class = "btn btn-danger">Supprimer</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="navigation d-flex justify-content-center mt-4">
+    {{ knp_pagination_render(Animes) }}
+</div>
+    {% else %}
+    <h4>Il n'y actuellement pas d'animés...</h4>
+    {% endif %}
+</div>
+{% endblock %}
