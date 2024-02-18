@@ -3,15 +3,23 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/cerulean/bootstrap.min.css" integrity="sha512-EKyrNi3+szgGslyi2kYzcYLwnBSt4XrnamWGiclaRkqsriEl+e4EmyNFAN/LoVXV8ESLxAQ7/cFfrX4rML0h2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/cerulean/bootstrap.css" integrity="sha512-vf7zh1xeJaHifOaTvytI9hkEOfNRQ0Zp2esPgn2e9BHW+XLu5aSV7xe9jFovz37cgaY695dEl/ENDNupVtARVw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/cerulean/bootstrap.rtl.css" integrity="sha512-NJONNOp3tBPrW2tBC/5m6r4ZDrDtStoBuwFdeJAxE0tSzwautdvJxDbLNSEG77m0zcgNTB8zVWi4bWXlo7aUgA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/cerulean/bootstrap.rtl.min.css" integrity="sha512-cy6qxCx6nFjvN3a8PL54lqn1lGMXF9ozeTN4j5ejy4t6wof/9c9OTRlwcW3oFvrleazfAcnYQOBrPg+WuEF4KA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         {% endblock %}
-
         {% block javascripts %}
 {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
-    </head>
+    </head>       
     <body>
-        {% block body %}{% endblock %}
+    {% block header %}
+        {% include 'partials/_header.html.twig' %}
+    {% endblock %}
+
+    {% block body %}
+    {% endblock %}
+
     </body>
 </html>
