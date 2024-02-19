@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AnimeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,18 +27,21 @@ class Anime
     #[Assert\Positive()]
     private ?int $episodes;
 
-    #[ORM\Column(length: 20, nullable: true)]
-    #[Assert\Length(min: 1, max: 20 )]
-    private ?string $genre = null;
-
     #[ORM\Column(type:'integer' , nullable: true)]
     #[Assert\PositiveOrZero()]
-
     private ?int $period = null;
 
     #[ORM\Column( type: 'string', length: 250, nullable: true )]
     #[Assert\Length(min: 0 , max: 250 )]
     private ?string $description;
+
+    #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'animes')]
+    private Collection $category;
+
+    public function __construct()
+    {
+        $this->category = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -66,19 +71,6 @@ class Anime
 
         return $this;
     }
-
-    public function getGenre(): ?string
-    {
-        return $this->genre;
-    }
-
-    public function setGenre(?string $genre): static
-    {
-        $this->genre = $genre;
-
-        return $this;
-    }
-
     public function getPeriod(): ?int
     {
         return $this->period;
@@ -101,4 +93,31 @@ class Anime
 
         return $this;
 }
+
+    /**
+     * @return Collection<int, Genre>
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(Genre $category): static
+    {
+        if (!$this->category->contains($category)) {
+            $this->category->add($category);
+            $category->addAnime($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Genre $category): static
+    {
+        if ($this->category->removeElement($category)) {
+            $category->removeAnime($this);
+        }
+
+        return $this;
+    }
 }

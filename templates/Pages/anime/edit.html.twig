@@ -23,10 +23,16 @@
     </div>
 
     <div class="form-group">
-      {{ form_label(form.genre) }}
-      {{ form_widget(form.genre) }}
+    <label for="exampleSelect1" class="form-label mt-4">
+      {{ form_label(form.category) }}
+    </label>
+      <select class="form-select" id="exampleSelect1">
+        <option>{{ form_widget(form.category) }}</option>
+      </select>
+      
+      
     <div class="form-error">
-      {{ form_errors(form.genre) }}
+      {{ form_errors(form.category) }}
     </div>
     </div>
 

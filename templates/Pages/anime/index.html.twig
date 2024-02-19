@@ -26,9 +26,8 @@
     <tr>
       <th scope="col">id</th>
       <th scope="col">Nom</th>
-      <th scope="col">Genre</th>
-      <th scope="col">Episodes</th>
       <th scope="col">Description</th>
+      <th scope="col">Episodes</th>
       <th scope="col">Année</th>
       <th scope="col">Modification</th>
       <th scope="col">Suppression</th>
@@ -39,9 +38,8 @@
     <tr class="table-dark ">
       <th scope="row">{{anime.id}}</th>
       <td>{{anime.Name}}</td>
-      <td>{{anime.Genre}}</td>
-      <td>{{anime.Episodes}}</td>
       <td>{{anime.Description}}</td>
+      <td>{{anime.Episodes}}</td>
       <td>{{anime.period}}</td>
       <td>
           <a href="{{ path('anime.edit', { id: anime.id }) }}" class = "btn btn-secondary">Modifier</a>
