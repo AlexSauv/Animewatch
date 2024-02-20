@@ -3,6 +3,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Anime;
 use App\Entity\Genre;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager as ObjectManager;
 use Faker\Factory;
@@ -11,6 +12,7 @@ use Faker\Generator;
 class AppFixtures extends Fixture 
 {
     private Generator $faker;
+
     public function __construct()
     {
         $this->faker = Factory::create('fr_FR');
@@ -39,6 +41,18 @@ class AppFixtures extends Fixture
         $manager->persist($genre);
        
     } 
+
+    // Users
+    for($j = 0; $j < 10 ; $j ++){
+        $user = new User();
+        $user->setFullName( $this->faker->name())
+        ->setPseudo(mt_rand(0, 1) === 1 ? $this->faker->firstName() : null)
+        ->setEmail($this->faker->email())
+        ->setRoles(['ROLE_USER'])
+        ->setPlainPassword('password');
+
+        $manager->persist($user);   
+    } 
     $manager->flush();
-    }
+   }
 }
