@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarColor02">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="#">Home
+          <a class="nav-link active" href="#">My Home
             <span class="visually-hidden">(current)</span>
           </a>
         </li>
@@ -24,8 +24,11 @@
       </ul>
       <form class="d-flex">
         <input class="form-control me-sm-4" type="search" placeholder="Rechercher...">
-         <input class="btn btn-dark btn-sm" type = "button" value= "Inscription"/>
-        <input  class="btn btn-dark btn-sm me-sm-1" type = "button"  value= "Se connecter"/>
+
+        <a href="{{ path('security.registration')}}" class="btn btn-secondary btn-sm">Inscription</a>
+
+        <a href="{{ path('security.login')}}" class="btn btn-dark btn-sm me-sm-1">Connexion</a>
+
       </form>
     </div>
   </div>

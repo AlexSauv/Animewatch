@@ -46,16 +46,22 @@ class AnimeType extends AbstractType
                         new Assert\Positive()
                     ]
                     ])
+
+                    // Ne fonctionne pas correctemment à changer 
                     ->add('category', EntityType::class, [
                         'class' => Genre::class,
                         'query_builder' => function (GenreRepository $er)  {
                             return $er->createQueryBuilder('u')
                                 ->orderBy('u.name', 'ASC');
                         },
+                        'attr' => [
+                            'class' => 'form-select'],
                         'label' => 'Genres',
-                        'label_attr' => ['class' => 'form-label' ],
+                        'label_attr' => ['class' => 'form-label mt-4' ],
                         'choice_label' => 'name',
                         'multiple' => true,
+                        'expanded' =>false,
+                        'disabled' => false
                         
                     ])
             ->add('period', IntegerType::class, [

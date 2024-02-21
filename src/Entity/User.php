@@ -22,13 +22,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 50)] 
-    #[Assert\Length(min: 1, max: 50 )]
+    #[Assert\Length(min: 2, max: 50 )]
     #[Assert\NotBlank()]
     private ?string $fullName = null;
    
 
     #[ORM\Column(length: 50, nullable: true)] 
-    #[Assert\Length(min: 1, max: 50 )]
+    #[Assert\Length(min: 2, max: 50 )]
     private ?string $pseudo = null;
    
 
@@ -49,7 +49,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Assert\NotBlank()]
-    private ?string $password = null;
+    private ?string $password = 'password';
     
 
     #[ORM\Column]
