@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\GenreRepository;
+use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -11,8 +11,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[UniqueEntity('name')]
-#[ORM\Entity(repositoryClass: GenreRepository::class)]
-class Genre
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,12 +24,13 @@ class Genre
     #[Assert\NotBlank()]
     private ?string $name;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $Description = null;
-    #[Assert\NotBlank()]
 
-    #[ORM\ManyToMany(targetEntity: Anime::class, inversedBy: 'category')]
+    #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'category')]
     private Collection $animes;
+    
+
 
     public function __construct()
     {
@@ -66,25 +67,31 @@ class Genre
     }
 
     /**
-     * @return Collection<int, anime>
+     * @return Collection<int, Anime>
      */
     public function getAnimes(): Collection
     {
         return $this->animes;
     }
 
-    public function addAnime(anime $anime): static
+    public function addAnime(Anime $anime): static
     {
         if (!$this->animes->contains($anime)) {
             $this->animes->add($anime);
+            $anime->setCategory($this);
         }
 
         return $this;
     }
 
-    public function removeAnime(anime $anime): static
+    public function removeAnime(Anime $anime): static
     {
-        $this->animes->removeElement($anime);
+        if ($this->animes->removeElement($anime)) {
+            // set the owning side to null (unless already changed)
+            if ($anime->getCategory() === $this) {
+                $anime->setCategory(null);
+            }
+        }
 
         return $this;
     }

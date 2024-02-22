@@ -3,8 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Anime;
-use App\Entity\Genre;
-use App\Repository\GenreRepository;
+use App\Entity\Category;
+use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -49,14 +49,14 @@ class AnimeType extends AbstractType
 
                     // Ne fonctionne pas correctemment à changer 
                     ->add('category', EntityType::class, [
-                        'class' => Genre::class,
-                        'query_builder' => function (GenreRepository $er)  {
+                        'class' => Category::class,
+                        'query_builder' => function (CategoryRepository $er)  {
                             return $er->createQueryBuilder('u')
                                 ->orderBy('u.name', 'ASC');
                         },
                         'attr' => [
                             'class' => 'form-select'],
-                        'label' => 'Genres',
+                        'label' => 'Genre',
                         'label_attr' => ['class' => 'form-label mt-4' ],
                         'choice_label' => 'name',
                         'multiple' => true,

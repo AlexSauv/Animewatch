@@ -4,11 +4,9 @@
 
 {% block body %}
   <div class = "container mt-4 ">
-  <h1 class = "d-flex justify-content-center" >Les Catégories</h1> 
+  <h1 class = "d-flex justify-content-center" >Les Genres</h1> 
 
-  <div class= "count mt-4">
-   Il y a actuellement {{genres.getTotalItemCount}} genres sur le site: 
-  </div>
+
   <table class="table table-hover  mt-4">
   <thead>
     <tr>
@@ -17,16 +15,16 @@
     </tr>
   </thead>
   <tbody>
-  {% for genre in genres %}
+  {% for category in Categories %}
     <tr class="table-dark ">
-      <th scope="row">{{genre.Name}}</th>
-      <td>{{genre.Description}}</td>
+      <th scope="row">{{category.Name}}</th>
+      <td>{{category.Description}}</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 <div class="navigation d-flex justify-content-center mt-4">
-    {{ knp_pagination_render(genres) }}
+    {{ knp_pagination_render(Categories) }}
 </div>
 </div>
 {% endblock %}

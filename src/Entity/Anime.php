@@ -35,12 +35,17 @@ class Anime
     #[Assert\Length(min: 0 , max: 250 )]
     private ?string $description;
 
-    #[ORM\ManyToMany(targetEntity: Genre::class, mappedBy: 'animes')]
-    private Collection $category;
+
+    #[ORM\ManyToOne(inversedBy: 'animes')]
+    private ?Category $category = null;
+
+    #[ORM\ManyToOne(inversedBy: 'animes')]
+    private ?User $user = null;
+
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+     
     }
 
     public function getId(): ?int
@@ -94,30 +99,31 @@ class Anime
         return $this;
 }
 
-    /**
-     * @return Collection<int, Genre>
-     */
-    public function getCategory(): Collection
+
+
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function addCategory(Genre $category): static
+    public function setCategory(?Category $category): static
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
-            $category->addAnime($this);
-        }
+        $this->category = $category;
 
         return $this;
     }
 
-    public function removeCategory(Genre $category): static
+    public function getUser(): ?User
     {
-        if ($this->category->removeElement($category)) {
-            $category->removeAnime($this);
-        }
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }
+
+ 
 }

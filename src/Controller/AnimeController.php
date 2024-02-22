@@ -31,7 +31,7 @@ class AnimeController extends AbstractController
             20
         );
         return $this->render('pages/anime/index.html.twig', [
-            'Animes'=> $animes
+            'animes'=> $animes
         ]);
     }
     /**

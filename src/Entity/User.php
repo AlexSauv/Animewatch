@@ -3,7 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -56,15 +59,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotNull()]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column]
-    #[Assert\NotNull()]
+    #[ORM\Column (nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'uuuser')]
+    private Collection $animes;
+
+
 
     
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->animes = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -206,4 +215,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Anime>
+     */
+    public function getAnimes(): Collection
+    {
+        return $this->animes;
+    }
+
+    public function addAnime(Anime $anime): static
+    {
+        if (!$this->animes->contains($anime)) {
+            $this->animes->add($anime);
+            $anime->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnime(Anime $anime): static
+    {
+        if ($this->animes->removeElement($anime)) {
+            // set the owning side to null (unless already changed)
+            if ($anime->getUser() === $this) {
+                $anime->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
 }
