@@ -38,14 +38,17 @@ class Anime
     private ?string $description;
 
 
-    #[ORM\ManyToOne(inversedBy: 'animes')]
-    #[ORM\JoinColumn(nullable:false)]
-    private ?Category $category = null;
 
 
     #[ORM\ManyToMany(targetEntity: WatchList::class, mappedBy: 'anime')]
     private Collection $watchLists;
 
+    #[ORM\OneToOne( inversedBy: 'anime', targetEntity: Pictures::class, cascade: ['persist', 'remove'])]
+    private Pictures $pictures;
+
+    #[ORM\ManyToOne(inversedBy: 'animes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
 
     public function __construct()
     {
@@ -105,19 +108,6 @@ class Anime
 
 
 
-    public function getCategory(): ?Category
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
-
-        return $this;
-    }
-
-
     /**
      * @return Collection<int, WatchList>
      */
@@ -147,6 +137,30 @@ class Anime
     public function __toString()
     {
         return $this->name;
+    }
+
+    public function getPictures(): ?Pictures
+    {
+        return $this->pictures;
+    }
+
+    public function setPictures(?Pictures $pictures): self
+    {
+        $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
+
+        return $this;
     }
  
 }

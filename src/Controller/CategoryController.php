@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Category;
-use App\Repository\AnimeRepository;
 use App\Repository\CategoryRepository;
 
 use Knp\Component\Pager\PaginatorInterface;
@@ -38,17 +37,16 @@ class CategoryController extends AbstractController
     #[Route('/{slug}', name: 'category.index', methods: ['GET'])]
     public function indexI(
         Category $category,
-        AnimeRepository $animeRepository, 
-         Request $request
+        CategoryRepository $repository, 
+        string $slug,
          ): Response
     {   
-       $animes = $animeRepository->findAnimes($request->query->getInt('page', 1),
-        $category);
-        
-        
+       $category = $repository->findOneBy(['name'=>$slug]);
+        $category->getAnimes()->toArray();
+
        return $this->render('pages/genre/category.html.twig', [
-            'category' => $category,
-            'animes'=> $animes
+            'category' => $category
+
         ]);
         
     }

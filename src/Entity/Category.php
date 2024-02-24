@@ -29,19 +29,14 @@ class Category
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $Description = null;
 
-    #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'category')]
+  #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'category', fetch:"EAGER")]
     private Collection $animes;
     
 
 
     public function __construct()
     {
-        $this->animes = new ArrayCollection();
-        
-    }
-
-    public function prePersist(){
-        $this->slug = (new Slugify())->slugify($this->title);
+       $this->animes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -73,7 +68,7 @@ class Category
         return $this;
     }
 
-    /**
+/**
      * @return Collection<int, Anime>
      */
     public function getAnimes(): Collection
@@ -102,11 +97,4 @@ class Category
 
         return $this;
     }
-
-    public function __toString()
-    {
-        return $this->name;
-    }
-
-
 }

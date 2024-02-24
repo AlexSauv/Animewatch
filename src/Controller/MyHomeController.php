@@ -16,7 +16,7 @@ class MyHomeController extends AbstractController
 {
     #[Route('/myHome', name: 'myhome.index')]
 
-        public function index(PaginatorInterface $paginator, AnimeRepository $repository, WatchListRepository $watchListRepository, WatchList $watchList, Request $request): Response
+        public function index( AnimeRepository $repository, WatchListRepository $watchListRepository, WatchList $watchList, Request $request): Response
         {  
             $animes = $repository->findAnimes($request->query->getInt('page', 1));
            

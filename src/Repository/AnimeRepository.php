@@ -29,23 +29,19 @@ class AnimeRepository extends ServiceEntityRepository
     public function findAnimes(int $page, Category $category = null, WatchList $watchList = null): PaginationInterface
     {
         $data = $this->createQueryBuilder('p')
-        ->join('p.category' , 'c')
-        ->select('c', 'p')
-        ->addOrderBy('p.id', 'ASC');
-       
-        if(isset($category)) {
-            $data = $data 
-            ->Where('c.id LIKE :Category')
-            ->setParameter('Category', $category->getId());
-        } 
 
-    
+        ->addOrderBy('p.id', 'ASC');
+         
         $data ->getQuery()
             ->getResult();
+         
+
+   
         $animes = $this->paginatorInterface->paginate( $data, $page, 10);
         return $animes;
     }
 }
+
 //    /**
 //     * @return Anime[] Returns an array of Anime objects
 //     */

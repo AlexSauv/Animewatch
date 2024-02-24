@@ -13,7 +13,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class AnimeController extends AbstractController
-{
+{   
+    
     /**
      * Ce controller affiche tous les animes
      *

@@ -1,17 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{Category.name}}{% endblock %}
+{% block title %}{{category.name}}{% endblock %}
 
 {% block body %}
-<div class = "container mx-auto">
-    <h1 class= "text-5xl text-center mt-24 mb-8">Genre : {{Category.name}}</h1>
+<div class = "container mt-4">
+    <h1 class= "text-5xl text-center mt-24 mb-8">Genre : {{category.name}}</h1>
     <div class="flex flex-row flex-wrap justify-evenly mt-8">
-        {% for anime in Category.animes %}
-             {% include "components/_card.html.twig" with  {anime : anime} only %}   
+       <div class="row mt-4">
+
+        {% for anime in category.animes %}
+        <div class = "col-md-4 mt-4">
+        <div class="card mt-4">
+  <div class="card-body">{{anime.category.name}}</div>
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="200" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+    <rect width="100%" height="100%" fill="#868e96"></rect>
+    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">{{anime.name}}</text>
+  </svg>
+  
+  <div class="card-footer text-muted">
+  <div class="card-body">
+    <p class="card-text">{{anime.description}}</p>
+  </div>
+    {{anime.period}}
+  </div>
+</div>   
+</div>        
         {% endfor %}
+            </div>
         </div>
-        <div class="navigation flex justify-centre mb-8">
-             {{knp_pagination_render(Category.animes)}}
     </div>
 </div>
 {% endblock %}
