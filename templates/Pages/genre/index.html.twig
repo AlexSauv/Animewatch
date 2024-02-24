@@ -2,29 +2,39 @@
 
 {% block title %}AnimeToWatch - Genres{% endblock %}
 
-{% block body %}
-  <div class = "container mt-4 ">
-  <h1 class = "d-flex justify-content-center" >Les Genres</h1> 
+{% block body %} 
+<main role="main">
+<div class="album py-5  >">
+  <div class = "container-fluid mt-4 ">
+<h1 class = "d-flex justify-content-center" >Les Catégories</h1> 
+<div class="row mt-4">
 
+{% for Category in Categories %}
 
-  <table class="table table-hover  mt-4">
-  <thead>
-    <tr>
-      <th scope="col">Nom</th>
-      <th scope="col">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for category in Categories %}
-    <tr class="table-dark ">
-      <th scope="row">{{category.Name}}</th>
-      <td>{{category.Description}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  <div class = "col-md-4 mt-4">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Espace réservé&nbsp;: vignette" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+            <div class="card-body">
+              <h2 class="d-flex justify-content-center">{{Category.Name}}<font style="vertical-align: inherit;"></font></h2>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group ">
+                  <button type="button" class="btn btn-sm btn-dark"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consulter</font></font></button>
+                </div>
+              </div>
+            </div>
+         </div>
+     </div>
+ 
+
+    {% endfor %}  
+    
+    <div>
+  </div>
+
+</div>
 <div class="navigation d-flex justify-content-center mt-4">
     {{ knp_pagination_render(Categories) }}
 </div>
-</div>
+
 {% endblock %}

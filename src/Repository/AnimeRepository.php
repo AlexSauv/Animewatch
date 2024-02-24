@@ -3,9 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Anime;
+use App\Entity\Category;
+use App\Entity\WatchList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Anime>
@@ -17,11 +20,32 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AnimeRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry,
+     private PaginatorInterface $paginatorInterface)
     {
         parent::__construct($registry, Anime::class);
     }
 
+    public function findAnimes(int $page, Category $category = null, WatchList $watchList = null): PaginationInterface
+    {
+        $data = $this->createQueryBuilder('p')
+        ->join('p.category' , 'c')
+        ->select('c', 'p')
+        ->addOrderBy('p.id', 'ASC');
+       
+        if(isset($category)) {
+            $data = $data 
+            ->Where('c.id LIKE :Category')
+            ->setParameter('Category', $category->getId());
+        } 
+
+    
+        $data ->getQuery()
+            ->getResult();
+        $animes = $this->paginatorInterface->paginate( $data, $page, 10);
+        return $animes;
+    }
+}
 //    /**
 //     * @return Anime[] Returns an array of Anime objects
 //     */
@@ -46,4 +70,4 @@ class AnimeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-}
+

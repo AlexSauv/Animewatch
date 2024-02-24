@@ -3,10 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -62,8 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column (nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'uuuser')]
-    private Collection $animes;
+
+    #[ORM\OneToOne(mappedBy: 'users', cascade: ['persist', 'remove'])]
+    private ?WatchList $watchList = null;
 
 
 
@@ -72,7 +70,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->animes = new ArrayCollection();
 
     }
 
@@ -216,32 +213,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Anime>
-     */
-    public function getAnimes(): Collection
+    public function getWatchList(): ?WatchList
     {
-        return $this->animes;
+        return $this->watchList;
     }
 
-    public function addAnime(Anime $anime): static
+    public function setWatchList(?WatchList $watchList): static
     {
-        if (!$this->animes->contains($anime)) {
-            $this->animes->add($anime);
-            $anime->setUser($this);
+        // unset the owning side of the relation if necessary
+        if ($watchList === null && $this->watchList !== null) {
+            $this->watchList->setUsers(null);
         }
 
-        return $this;
-    }
-
-    public function removeAnime(Anime $anime): static
-    {
-        if ($this->animes->removeElement($anime)) {
-            // set the owning side to null (unless already changed)
-            if ($anime->getUser() === $this) {
-                $anime->setUser(null);
-            }
+        // set the owning side of the relation if necessary
+        if ($watchList !== null && $watchList->getUsers() !== $this) {
+            $watchList->setUsers($this);
         }
+
+        $this->watchList = $watchList;
 
         return $this;
     }

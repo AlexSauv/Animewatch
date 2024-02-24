@@ -30,8 +30,6 @@
       <th scope="col">Description</th>
       <th scope="col">Episodes</th>
       <th scope="col">Année</th>
-      <th scope="col">Modification</th>
-      <th scope="col">Suppression</th>
     </tr>
   </thead>
   <tbody>
@@ -43,12 +41,6 @@
       <td>{{anime.Description}}</td>
       <td>{{anime.Episodes}}</td>
       <td>{{anime.period}}</td>
-      <td>
-          <a href="{{ path('anime.edit', { id: anime.id }) }}" class = "btn btn-secondary">Modifier</a>
-      </td>
-      <td>
-        <a href="{{ path('anime.delete', { id: anime.id }) }}" class = "btn btn-danger">Supprimer</a>
-      </td>
     </tr>
     {% endfor %}
   </tbody>

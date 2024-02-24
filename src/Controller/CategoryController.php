@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Repository\AnimeRepository;
 use App\Repository\CategoryRepository;
 
 use Knp\Component\Pager\PaginatorInterface;
@@ -10,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/genres')]
 class CategoryController extends AbstractController
 {
     /**
@@ -20,7 +23,7 @@ class CategoryController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    #[Route('/genre', name: 'genre.index', methods: ['GET'])]
+    #[Route('/', name: 'genres.index', methods: ['GET'])]
     public function index(PaginatorInterface $paginator, CategoryRepository $categoryRepository, Request $request): Response
     {   
         $categories = $paginator->paginate( 
@@ -32,4 +35,22 @@ class CategoryController extends AbstractController
             'Categories'=> $categories
         ]);
     }
+    #[Route('/{slug}', name: 'category.index', methods: ['GET'])]
+    public function indexI(
+        Category $category,
+        AnimeRepository $animeRepository, 
+         Request $request
+         ): Response
+    {   
+       $animes = $animeRepository->findAnimes($request->query->getInt('page', 1),
+        $category);
+        
+        
+       return $this->render('pages/genre/category.html.twig', [
+            'category' => $category,
+            'animes'=> $animes
+        ]);
+        
+    }
+
 }

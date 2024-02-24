@@ -25,11 +25,7 @@ class AnimeController extends AbstractController
     #[Route('/anime', name: 'anime.index', methods: ['GET'])]
     public function index(AnimeRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {   
-        $animes = $paginator->paginate( 
-            $repository->findAll(),
-            $request->query->getInt('page', 1),
-            20
-        );
+        $animes = $repository->findAnimes($request->query->getInt('page', 1));
         return $this->render('pages/anime/index.html.twig', [
             'animes'=> $animes
         ]);

@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,7 +24,7 @@ class Category
     #[ORM\Column(type: 'string', length: 20)]
     #[Assert\Length(min: 1, max: 20 )]
     #[Assert\NotBlank()]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $Description = null;
@@ -35,6 +37,11 @@ class Category
     public function __construct()
     {
         $this->animes = new ArrayCollection();
+        
+    }
+
+    public function prePersist(){
+        $this->slug = (new Slugify())->slugify($this->title);
     }
 
     public function getId(): ?int
@@ -95,4 +102,11 @@ class Category
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+
 }

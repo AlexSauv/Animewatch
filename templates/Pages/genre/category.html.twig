@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{Category.name}}{% endblock %}
+
+{% block body %}
+<div class = "container mx-auto">
+    <h1 class= "text-5xl text-center mt-24 mb-8">Genre : {{Category.name}}</h1>
+    <div class="flex flex-row flex-wrap justify-evenly mt-8">
+        {% for anime in Category.animes %}
+             {% include "components/_card.html.twig" with  {anime : anime} only %}   
+        {% endfor %}
+        </div>
+        <div class="navigation flex justify-centre mb-8">
+             {{knp_pagination_render(Category.animes)}}
+    </div>
+</div>
+{% endblock %}

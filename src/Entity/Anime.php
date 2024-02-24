@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\Anime\AnimeRepository as AnimeAnimeRepository;
 use App\Repository\AnimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,16 +17,17 @@ class Anime
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Assert\NotNull()]
     private ?int $id;
 
     #[ORM\Column(type: 'string', length: 50)]
     #[Assert\Length(min: 1, max: 50 )]
     #[Assert\NotBlank()]
-    private ?string $name;
+    private ?string $name = null;
 
     #[ORM\Column( type: 'integer')]
     #[Assert\Positive()]
-    private ?int $episodes;
+    private ?int $episodes = null;
 
     #[ORM\Column(type:'integer' , nullable: true)]
     #[Assert\PositiveOrZero()]
@@ -37,15 +39,17 @@ class Anime
 
 
     #[ORM\ManyToOne(inversedBy: 'animes')]
+    #[ORM\JoinColumn(nullable:false)]
     private ?Category $category = null;
 
-    #[ORM\ManyToOne(inversedBy: 'animes')]
-    private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: WatchList::class, mappedBy: 'anime')]
+    private Collection $watchLists;
 
 
     public function __construct()
     {
-     
+        $this->watchLists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,17 +117,36 @@ class Anime
         return $this;
     }
 
-    public function getUser(): ?User
+
+    /**
+     * @return Collection<int, WatchList>
+     */
+    public function getWatchLists(): Collection
     {
-        return $this->user;
+        return $this->watchLists;
     }
 
-    public function setUser(?User $user): static
+    public function addWatchList(WatchList $watchList): self
     {
-        $this->user = $user;
+        if (!$this->watchLists->contains($watchList)) {
+            $this->watchLists[] = $watchList;
+            $watchList->addAnime($this);
+        }
 
         return $this;
     }
 
+    public function removeWatchList(WatchList $watchList): self
+    {
+        if ($this->watchLists->removeElement($watchList)) {
+            $watchList->removeAnime($this);
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
+        return $this->name;
+    }
  
 }

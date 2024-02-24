@@ -3,7 +3,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Anime;
 use App\Entity\Category;
-use App\Entity\User;
+use App\Repository\Anime\AnimeRepository as AnimeAnimeRepository;
 use App\Repository\AnimeRepository;
 use App\Repository\UserRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -36,20 +36,7 @@ class AppFixtures extends Fixture
    
    }
  
-    // Users
-        $users = [];
-        for($j = 0; $j < 10 ; $j ++){
-        $user = new User();
-        $user->setFullName( $this->faker->name())
-        ->setPseudo(mt_rand(0, 1) === 1 ? $this->faker->firstName() : null)
-        ->setEmail($this->faker->email())
-        ->setRoles(['ROLE_USER'])
-        ->setPlainPassword('password');
-        $users[] = $user;
-
-
-        $manager->persist($user);   
-    } 
+ 
 
             //Animes
             $animes = [];
@@ -58,8 +45,8 @@ class AppFixtures extends Fixture
             $anime  ->setName( $this->faker->word())
                 ->setEpisodes(mt_rand(1, 1300))
                 ->setPeriod(mt_rand(1970, 2024))
-                ->setCategory($categories[mt_rand(0, count($categories) - 1) ])
-                ->setUser($users[mt_rand(0, count($users) -1)]);
+                ->setCategory($categories[mt_rand(0, count($categories) - 1) ]);
+                
             
             $animes[] = $anime;
             $manager->persist($anime);
