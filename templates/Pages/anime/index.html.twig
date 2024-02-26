@@ -5,11 +5,10 @@
 {% block body %}
   <div class = "container mt-4 ">
   {% if not animes.items is same as ([]) %}
-  <h1 class = "d-flex justify-content-center" >All Animes</h1>
   
-  <a href="{{ path('anime.new')}}" class="btn btn-light btn-sm">
-    Ajouter un anime
-  </a>
+  <h1 class = "d-flex justify-content-center" >Les Animés</h1>
+  
+  
 
  {# read and display just one flash message type #}
   {% for message in app.flashes('success') %}
@@ -18,33 +17,35 @@
     </div>
   {% endfor %}  
 
-  <div class= "count mt-4">
-   Il y a actuellement {{animes.getTotalItemCount}} animés sur le site: 
+ 
+<div class = "container mt-4">
+    <div class="flex flex-row flex-wrap justify-evenly mt-8">
+       <div class="row mt-4">
+
+        {% for anime in animes %}
+        
+        <div class = "col-md-3 mt-4">
+        <div class="card mt-1">
+  <a href= "{{ path('anime_name.index', { 'slug' :anime.name}) }}" >
+  <svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="225" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
+    <rect width="100%" height="100%" fill="#868e96"></rect>
+    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">{{anime.name}}</text>
+  </svg>
+  </a>  
+ 
+  <div class="card-body mt-2">
+    <p class = "d-flex justify-content-center">Genre: {{anime.category.name}}</p>
   </div>
-  <table class="table table-hover  mt-4">
-  <thead>
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">Nom</th>
-      <th scope="col">Genre</th>
-      <th scope="col">Description</th>
-      <th scope="col">Episodes</th>
-      <th scope="col">Année</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for anime in animes %}
-    <tr class="table-dark ">
-      <th scope="row">{{anime.id}}</th>
-      <td>{{anime.Name}}</td>
-      <td>{{anime.category.name}}</td>
-      <td>{{anime.Description}}</td>
-      <td>{{anime.Episodes}}</td>
-      <td>{{anime.period}}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+    
+  
+</div>   
+</div>  
+    
+        {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 <div class="navigation d-flex justify-content-center mt-4">
     {{ knp_pagination_render(animes) }}
 </div>

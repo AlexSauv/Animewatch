@@ -1,16 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} AnimeToWatch - Accueil 
+{% block title %} WatchAnime - Accueil 
 {% endblock %}
 {% block body %}
-<div class="container mt-4">
- <div class="accueil">
-    <h1 class ="presentation">Bienvenue sur Animetowatch!</h1>
-        <p class ="description">Animetowatch est une application qui va vous permettre de gérer vos listes d'animes à regarder et de partager vos découvertes avec la communauté ou bien de les gardez pour vous!</p>
-    <hr>
-        <p> Pour commencer veuillez vous inscrire pour pouvoir garder vos données
-    <br>
-       
-    </div>
+
+
+ <div class="text-center text-bg-dark ">
+    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="225" >
+ 
+<div class="cover flex-column">
+  
+
+  <main class="px-3">
+    <h1 class="text-white-50"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Bienvenue sur Animetowatch!</font></font></h1>
+    <p class="lead"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Animetowatch est une application qui va vous permettre de gérer vos listes d'animes à regarder et de partager vos découvertes et de les notées et vous referrez aux avis de la communauté.</font></font></p>
+    
+  </main>
+
+  <footer class="text-white-50">
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Pour commencer veuillez vous inscrire pour pouvoir utilisez le plein potentiel de l'application.</font></font></p>
+  <p class="lead">
+      <a href="{{path('security.registration')}}" class="btn btn-lg btn-light fw-bold border-light"><font class"mt-auto text-dark-50">M'inscrire</font></a>
+    </p>
+</footer>
+</svg>
+
 </div>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="225">
+</svg>
+
+
 {% endblock %}

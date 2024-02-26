@@ -4,28 +4,21 @@
 
 {% block body %} 
 <main role="main">
-<div class="album py-5  >">
+<div class="album py-5">
   <div class = "container-fluid mt-4 ">
-<h1 class = "d-flex justify-content-center" >Les Catégories</h1> 
-<div class="row mt-4">
+<h1 class = "d-flex justify-content-center" >Les Genres</h1> 
+    <div class="row mt-4">
 
 {% for Category in Categories %}
 
-  <div class = "col-md-4 mt-4">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Espace réservé&nbsp;: vignette" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-            <div class="card-body">
-              <h2 class="d-flex justify-content-center">{{Category.Name}}<font style="vertical-align: inherit;"></font></h2>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group ">
-                  <button type="button" class="btn btn-sm btn-dark"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Consulter</font></font></button>
-                </div>
-              </div>
-            </div>
+         <div class = "col-md-4 mt-4">
+            <div class="card shadow-sm">
+            <a href= "{{ path('category.index', { 'slug' :Category.name}) }}" >
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Espace réservé&nbsp;: vignette" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="45%" y="50%" fill="#eceeef" dy=".3em">{{Category.Name}}</text></svg>
+             </a>     
          </div>
      </div>
- 
+
 
     {% endfor %}  
     

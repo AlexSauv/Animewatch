@@ -26,10 +26,12 @@ class Category
     #[Assert\NotBlank()]
     private ?string $name = null;
 
+
+
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $Description = null;
 
-  #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'category', fetch:"EAGER")]
+    #[ORM\OneToMany(targetEntity: Anime::class, mappedBy: 'category', fetch:"EAGER")]
     private Collection $animes;
     
 
@@ -38,6 +40,7 @@ class Category
     {
        $this->animes = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -97,4 +100,19 @@ class Category
 
         return $this;
     }
+
+    private $slug;
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
 }

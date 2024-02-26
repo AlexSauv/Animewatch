@@ -26,18 +26,17 @@ class AnimeRepository extends ServiceEntityRepository
         parent::__construct($registry, Anime::class);
     }
 
-    public function findAnimes(int $page, Category $category = null, WatchList $watchList = null): PaginationInterface
+    public function findAnimes(int $page,  WatchList $watchList = null): PaginationInterface
     {
         $data = $this->createQueryBuilder('p')
-
+        
+         
+        
         ->addOrderBy('p.id', 'ASC');
-         
-        $data ->getQuery()
-            ->getResult();
-         
-
+        $data->getQuery()
+        ->getResult();
    
-        $animes = $this->paginatorInterface->paginate( $data, $page, 10);
+        $animes = $this->paginatorInterface->paginate( $data, $page, 9);
         return $animes;
     }
 }

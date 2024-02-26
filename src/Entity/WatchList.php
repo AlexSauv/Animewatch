@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\User;
 use App\Repository\WatchListRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\JoinTable;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WatchListRepository::class)]
@@ -17,9 +18,7 @@ class WatchList
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Anime::class, inversedBy: 'watchLists')]
-    #[JoinTable(name: 'watch_list_anime')]
-    private Collection $animes;
+
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -29,12 +28,23 @@ class WatchList
 
     #[ORM\OneToOne(inversedBy: 'watchList', cascade: ['persist', 'remove'])]
     #[Assert\NotNull()]
-    private ?User $users = null;
+    private ?User $user = null;
+
+    #[ORM\ManyToMany(targetEntity: Anime::class, inversedBy: 'watchLists')]
+    private Collection $anime;
 
     public function __construct()
     {
-        $this->animes = new ArrayCollection();
+        
         $this->createdAt = new \DateTimeImmutable();
+        $this->anime = new ArrayCollection();
+        
+        
+        
+    }
+
+    public function haveWatchlist(): void
+    {
         
     }
 
@@ -43,29 +53,7 @@ class WatchList
         return $this->id;
     }
 
-    /**
-     * @return Collection<int, anime>
-     */
-    public function getAnime(): Collection
-    {
-        return $this->animes;
-    }
-
-    public function addAnime(Anime $anime): self
-    {
-        if (!$this->animes->contains($anime)) {
-            $this->animes[] = $anime;
-        }
-
-        return $this;
-    }
-
-    public function removeAnime(Anime $anime): self
-    {
-        $this->animes->removeElement($anime);
-
-        return $this;
-    }
+    
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -91,15 +79,40 @@ class WatchList
         return $this;
     }
 
-    public function getUsers(): ?User
+    public function getUser(): ?User
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function setUsers(?User $users): static
+    public function setUser(?User $user): static
     {
-        $this->users = $users;
+        $this->user = $user;
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Anime>
+     */
+    public function getAnime(): Collection
+    {
+        return $this->anime;
+    }
+
+    public function addAnime(Anime $anime): static
+    {
+        if (!$this->anime->contains($anime)) {
+            $this->anime->add($anime);
+        }
+
+        return $this;
+    }
+
+    public function removeAnime(Anime $anime): static
+    {
+        $this->anime->removeElement($anime);
+
+        return $this;
+    }
+    
 }

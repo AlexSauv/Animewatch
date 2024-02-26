@@ -105,4 +105,23 @@ class AnimeController extends AbstractController
 
         return $this->redirectToRoute('anime.index');       
     }
+
+    #[Route('anime/{slug}', name: 'anime_name.index', methods: ['GET'])]
+    public function indexI(
+        Anime $anime,
+        AnimeRepository $repository, 
+        string $slug,
+         ): Response
+    {   
+       $anime = $repository->findOneBy(['name'=>$slug]);
+
+       
+       
+
+       return $this->render('pages/anime/show.html.twig', [
+            'anime' => $anime
+
+        ]);
+        
+    }
 }

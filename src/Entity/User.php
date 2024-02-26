@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -60,8 +62,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $updatedAt = null;
 
 
-    #[ORM\OneToOne(mappedBy: 'users', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?WatchList $watchList = null;
+
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'userr', orphanRemoval: true)]
+    private Collection $notes;
 
 
 
@@ -70,6 +75,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->notes = new ArrayCollection();
 
     }
 
@@ -222,15 +228,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // unset the owning side of the relation if necessary
         if ($watchList === null && $this->watchList !== null) {
-            $this->watchList->setUsers(null);
+            $this->watchList->setUser(null);
         }
 
         // set the owning side of the relation if necessary
-        if ($watchList !== null && $watchList->getUsers() !== $this) {
-            $watchList->setUsers($this);
+        if ($watchList !== null && $watchList->getUser() !== $this) {
+            $watchList->setUser($this);
         }
 
         $this->watchList = $watchList;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setUserr($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getUserr() === $this) {
+                $note->setUserr(null);
+            }
+        }
 
         return $this;
     }

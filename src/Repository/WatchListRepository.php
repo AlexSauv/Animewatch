@@ -21,6 +21,7 @@ class WatchListRepository extends ServiceEntityRepository
         parent::__construct($registry, WatchList::class);
     }
 
+    
 //    /**
 //     * @return WatchList[] Returns an array of WatchList objects
 //     */

@@ -38,11 +38,6 @@ class Anime
     private ?string $description;
 
 
-
-
-    #[ORM\ManyToMany(targetEntity: WatchList::class, mappedBy: 'anime')]
-    private Collection $watchLists;
-
     #[ORM\OneToOne( inversedBy: 'anime', targetEntity: Pictures::class, cascade: ['persist', 'remove'])]
     private Pictures $pictures;
 
@@ -50,9 +45,18 @@ class Anime
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
+    #[ORM\ManyToMany(targetEntity: WatchList::class, mappedBy: 'anime')]
+    private Collection $watchLists;
+
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'anime', orphanRemoval: true)]
+    private Collection $notes;
+
+    private ?float $average = null;
+
     public function __construct()
     {
         $this->watchLists = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -108,32 +112,7 @@ class Anime
 
 
 
-    /**
-     * @return Collection<int, WatchList>
-     */
-    public function getWatchLists(): Collection
-    {
-        return $this->watchLists;
-    }
-
-    public function addWatchList(WatchList $watchList): self
-    {
-        if (!$this->watchLists->contains($watchList)) {
-            $this->watchLists[] = $watchList;
-            $watchList->addAnime($this);
-        }
-
-        return $this;
-    }
-
-    public function removeWatchList(WatchList $watchList): self
-    {
-        if ($this->watchLists->removeElement($watchList)) {
-            $watchList->removeAnime($this);
-        }
-
-        return $this;
-    }
+ 
     public function __toString()
     {
         return $this->name;
@@ -162,5 +141,77 @@ class Anime
 
         return $this;
     }
- 
+
+    /**
+     * @return Collection<int, WatchList>
+     */
+    public function getWatchLists(): Collection
+    {
+        return $this->watchLists;
+    }
+
+    public function addWatchList(WatchList $watchList): static
+    {
+        if (!$this->watchLists->contains($watchList)) {
+            $this->watchLists->add($watchList);
+            $watchList->addAnime($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWatchList(WatchList $watchList): static
+    {
+        if ($this->watchLists->removeElement($watchList)) {
+            $watchList->removeAnime($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setAnime($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getAnime() === $this) {
+                $note->setAnime(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getAverage()
+    {
+        $notes = $this->notes;
+
+        if($notes->toArray() === []) {
+            $this->average = null;
+            return $this->average;
+        }
+
+        $total = 0;
+        foreach ($notes as $note){
+            $total += $note->getNote();
+        }
+        $this->average = $total / count($notes);
+        return $this->average;
+    }
 }
