@@ -65,7 +65,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?WatchList $watchList = null;
 
-    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'userr', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'user', orphanRemoval: true)]
     private Collection $notes;
 
 
@@ -253,7 +253,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->notes->contains($note)) {
             $this->notes->add($note);
-            $note->setUserr($this);
+            $note->setUser($this);
         }
 
         return $this;
@@ -263,8 +263,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->notes->removeElement($note)) {
             // set the owning side to null (unless already changed)
-            if ($note->getUserr() === $this) {
-                $note->setUserr(null);
+            if ($note->getUser() === $this) {
+                $note->setUser(null);
             }
         }
 

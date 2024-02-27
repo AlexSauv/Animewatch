@@ -4,18 +4,11 @@
 
 {% block body %}
   <div class = "container mt-4 ">
-  {% if not animes.items is same as ([]) %}
   
-  <h1 class = "d-flex justify-content-center" >Les Animés</h1>
-  
-  
+  <h1 class = "d-flex justify-content-center" >Le Top des tendances animés</h1>
 
- {# read and display just one flash message type #}
-  {% for message in app.flashes('success') %}
-    <div class="alert alert-success mt-4">
-        {{ message }}
-    </div>
-  {% endfor %}  
+<p class="d-flex justify-content-center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Ici se trouve la crème de la crème ! Tu trouveras ici les animés classés selon les tendances :</font></font></p>
+  
 
  
 <div class = "container mt-4">
@@ -28,14 +21,13 @@
         <div class="card mt-1">
   <a href= "{{ path('anime_name.index', { 'slug' :anime.name}) }}" >
   <img src= "{{anime.image}}" class="d-block user-select-none" width="100%" height="225">
-    <h5 class = "d-flex justify-content-center"><font class="mb-1 mt-4 fst-italic">{{anime.name}}</font></h5>  
+    <h5 class = "d-flex justify-content-center"><font class=" mt-4 fst-italic">{{anime.name}}</font></h5>  
     </a>  
  
   <div class="card-body mt-1">
+   <p class = "d-flex justify-content-center">Note : {{anime.average|number_format(2, '.', ',')}}</p>
     <p class = "d-flex justify-content-center">Genre: {{anime.category.name}}</p>
   </div>
-    
-  
 </div>   
 </div>  
     
@@ -47,8 +39,7 @@
 <div class="navigation d-flex justify-content-center mt-4">
     {{ knp_pagination_render(animes) }}
 </div>
-    {% else %}
-    <h4>Il n'y actuellement pas d'animés...</h4>
-    {% endif %}
+    
+
 </div>
 {% endblock %}

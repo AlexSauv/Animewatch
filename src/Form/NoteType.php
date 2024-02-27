@@ -2,10 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Anime;
 use App\Entity\Note;
-use App\Entity\User;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -28,14 +25,16 @@ class NoteType extends AbstractType
                 'attr' => [
                     'class' => 'form-select'
                 ],
-                'label' => 'Noter l\'animé',
+                'label' => 'Je note l\'animé: ',
                 'label_attr' => [
                     'class' => 'form-label-mt-4'
                 ]
             ])
-            ->add('submit', SubmitType::class)
+            ->add ('submit', SubmitType::class, [
+                'attr' => ['class'=> 'btn btn-light mt-1'],
+                'label'=> 'Ma note']);
         
-        ;
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

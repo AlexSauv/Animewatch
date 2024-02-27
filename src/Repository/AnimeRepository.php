@@ -3,8 +3,6 @@
 namespace App\Repository;
 
 use App\Entity\Anime;
-use App\Entity\Category;
-use App\Entity\WatchList;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
@@ -26,7 +24,7 @@ class AnimeRepository extends ServiceEntityRepository
         parent::__construct($registry, Anime::class);
     }
 
-    public function findAnimes(int $page,  WatchList $watchList = null): PaginationInterface
+    public function findAnimes(int $page): PaginationInterface
     {
         $data = $this->createQueryBuilder('p')
         
@@ -36,9 +34,10 @@ class AnimeRepository extends ServiceEntityRepository
         $data->getQuery()
         ->getResult();
    
-        $animes = $this->paginatorInterface->paginate( $data, $page, 9);
+        $animes = $this->paginatorInterface->paginate( $data, $page, 12);
         return $animes;
     }
+
 }
 
 //    /**

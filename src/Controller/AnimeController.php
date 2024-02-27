@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Anime;
+use App\Entity\Note;
 use App\Form\AnimeType;
+use App\Form\NoteType;
 use App\Repository\AnimeRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +27,7 @@ class AnimeController extends AbstractController
      * @return Response
      */
     #[Route('/anime', name: 'anime.index', methods: ['GET'])]
-    public function index(AnimeRepository $repository, PaginatorInterface $paginator, Request $request): Response
+    public function index(AnimeRepository $repository, Request $request): Response
     {   
         $animes = $repository->findAnimes($request->query->getInt('page', 1));
         return $this->render('pages/anime/index.html.twig', [
@@ -106,22 +109,61 @@ class AnimeController extends AbstractController
         return $this->redirectToRoute('anime.index');       
     }
 
-    #[Route('anime/{slug}', name: 'anime_name.index', methods: ['GET'])]
+    /*** A REVOIR VITE !!!!!!!!!!!! Ne met pas le top !! 
+     * 
+    */
+    #[Route('/anime/tendance', name: 'anime_top.index', methods: ['GET'])]
+    public function topTendance(AnimeRepository $repository, Request $request): Response
+    {   
+        $animes = $repository->findAnimes($request->query->getInt('page', 1));
+        return $this->render('pages/anime/tendance.html.twig', [
+            'animes'=> $animes
+        ]);
+
+    }
+
+    #[Route('anime/{slug}', name: 'anime_name.index', methods: ['GET', 'POST'])]
     public function indexI(
         Anime $anime,
         AnimeRepository $repository, 
-        string $slug,
+        string $slug, Request $request, NoteRepository $noteRepository, EntityManagerInterface $manager
          ): Response
     {   
        $anime = $repository->findOneBy(['name'=>$slug]);
 
-       
-       
+         
+        $note = new Note(); 
+        $form = $this->createForm(NoteType::class, $note);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $note->setUser($this->getUser())
+            ->setAnime($anime);
+
+            $existingNote = $noteRepository->findOneBy(['user'=>$this->getUser(), 'anime' => $anime]);
+
+            if(!$existingNote) {
+                $manager->persist($note);
+            } else {
+                $existingNote->setNote(
+                 $form->getData()->getNote());
+            
+            }
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Ta note à bien été enregistrée :)'
+            );
+
+            return $this->redirectToRoute('anime_name.index', ['slug'=>$anime->getName()]);
+        }
 
        return $this->render('pages/anime/show.html.twig', [
-            'anime' => $anime
-
+            'anime' => $anime,
+            'form' => $form->createView()
         ]);
         
     }
+
 }

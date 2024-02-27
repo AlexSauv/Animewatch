@@ -28,7 +28,7 @@ class Note
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userr = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'notes')]
     #[ORM\JoinColumn(nullable: false)]
@@ -60,14 +60,14 @@ class Note
         return $this;
     }
 
-    public function getUserr(): ?User
+    public function getUser(): ?User
     {
-        return $this->userr;
+        return $this->user;
     }
 
-    public function setUserr(?User $userr): static
+    public function setUser(?User $user): static
     {
-        $this->userr = $userr;
+        $this->user = $user;
 
         return $this;
     }

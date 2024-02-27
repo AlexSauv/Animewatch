@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,8 +24,6 @@ class Category
     #[Assert\Length(min: 1, max: 20 )]
     #[Assert\NotBlank()]
     private ?string $name = null;
-
-
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $Description = null;
@@ -103,6 +100,11 @@ class Category
 
     private $slug;
 
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+
+
+
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -111,6 +113,18 @@ class Category
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

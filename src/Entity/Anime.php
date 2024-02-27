@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\Anime\AnimeRepository as AnimeAnimeRepository;
+
 use App\Repository\AnimeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -38,9 +38,6 @@ class Anime
     private ?string $description;
 
 
-    #[ORM\OneToOne( inversedBy: 'anime', targetEntity: Pictures::class, cascade: ['persist', 'remove'])]
-    private Pictures $pictures;
-
     #[ORM\ManyToOne(inversedBy: 'animes')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
@@ -52,6 +49,9 @@ class Anime
     private Collection $notes;
 
     private ?float $average = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     public function __construct()
     {
@@ -118,17 +118,6 @@ class Anime
         return $this->name;
     }
 
-    public function getPictures(): ?Pictures
-    {
-        return $this->pictures;
-    }
-
-    public function setPictures(?Pictures $pictures): self
-    {
-        $this->pictures = $pictures;
-
-        return $this;
-    }
 
     public function getCategory(): ?Category
     {
@@ -213,5 +202,17 @@ class Anime
         }
         $this->average = $total / count($notes);
         return $this->average;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
     }
 }

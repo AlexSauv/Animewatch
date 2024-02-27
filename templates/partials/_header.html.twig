@@ -20,11 +20,13 @@
           <a class="nav-link" href="{{ path('genres.index')}}">Genres</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Tendance</a>
+          <a class="nav-link" href="{{ path('anime_top.index')}}">Tendance</a>
         </li>
       </ul>
       <div class="d-flex">
+      
         <input class="form-control me-sm-5" type="search" placeholder="Rechercher...">
+     
     <ul class= "navbar-nav me-auto">
         {% if app.user %}
   

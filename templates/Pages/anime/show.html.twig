@@ -6,16 +6,20 @@
 
 
 <div class = "nav-auto">
-<svg xmlns="http://www.w3.org/2000/svg" class="d-block user-select-none" width="100%" height="225" aria-label="Placeholder: Image cap" focusable="false" role="img" preserveAspectRatio="xMidYMid slice" viewBox="0 0 318 180" style="font-size:1.125rem;text-anchor:middle">
-    <rect width="100%" height="100%" fill="#868e96"></rect>
-  </svg>
+<img src="{{anime.image}}" class="d-block user-select-none" width="100%" height="225">
 </div>
+  {% for message in app.flashes('success') %}
+    <div class="alert alert-success mt-4">
+        {{ message }}
+    </div>
+  {% endfor %} 
+<div class="note mt-2 ">{{form(form)}}</div>
     <div class="col-md-8 mt-4"  >
       <h5 class="pb-4 mb-1 fst-italic"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
         Genre : {{anime.category.name}}
      
       </font></font></h5>
-      <p class="blog-post-meta fst-italic  border-bottom" ><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Note : {{anime.average}}</font></font></p>
+      <p class="blog-post-meta fst-italic  border-bottom" ><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Note : {{anime.average|number_format(2, '.', ',')}}</font></font></p>
 
       <article class="blog-post">
         <h2><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{anime.name}}</font></font></h2>
@@ -29,5 +33,9 @@
         <blockquote class="blockquote">
           <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{anime.description}}</font></font></p>
         </blockquote>
+   
+            
+
+
          
 {% endblock %}
